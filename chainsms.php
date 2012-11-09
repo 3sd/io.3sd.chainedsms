@@ -68,3 +68,15 @@ function chainsms_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
 function chainsms_civicrm_managed(&$entities) {
   return _chainsms_civix_civicrm_managed($entities);
 }
+
+function chainsms_civicrm_post( $op, $objectName, $objectId, &$objectRef ){
+ 
+    //try and return as quickly as possible
+    if($objectName!='Activity' || $objectRef->activity_type_id != CRM_Core_OptionGroup::getValue('activity_type', 'Inbound SMS', 'name')){
+        return;
+    }
+    $activity = civicrm_api('Activity', 'getsingle', array('version'=>'3','id' => $objectId));
+    $p = new CRM_Chainsms_Processor;
+    $p->inbound($activity);
+}
+
