@@ -41,7 +41,7 @@ function civicrm_api3_contact_sms($params) {
             $contactIds[]=$contact['contact_id'];
         }
 	}elseif(isset($params['group_id'])){
-        $groupContactsResult = civicrm_api('GroupContact', 'get', array('version'=>3, 'group_id' => $params['group_id']));
+        $groupContactsResult = civicrm_api('GroupContact', 'get', array('version'=>3, 'group_id' => $params['group_id'], 'option.limit' => 1000000)); // This will break if you try and SMS more than one million people :)
         $contactDetails = $groupContactsResult['values'];
         //idea is that this contact will take a contact ID and a text message and then send an SMS
         
@@ -67,21 +67,25 @@ function civicrm_api3_contact_sms($params) {
     }elseif(isset($params['text'])){
         $activityParams['text_message']=$params['text'];
     }else{
-        return civicrm_api3_create_error('YOu should include either text or a msg_template_id');
+        return civicrm_api3_create_error('You should include either text or a msg_template_id');
     }
 	
 	$sms = CRM_Activity_BAO_Activity::sendSMS($contactDetails, $activityParams, $provider, $contactIds, $userID);
-	
     $created_activity = civicrm_api('Activity', 'get', array('version' => 3, 'id' => $sms[1]));
-    
+   if(!$created_activity['count']){
+     return civicrm_api3_create_success();
+   }
+    //record the message template ID if this was sent using a message template
     if($params['msg_template_id']){
-                
+        
+        $message_template_id_fieldName=civicrm_api("CustomField","getvalue", array ('version' => '3', 'name' =>'message_template_id', 'return' =>'id'));
         $CDparams = array(
             'entityID' => $created_activity['id'],
-            'custom_1' => $params['msg_template_id']
+            "custom_{$message_template_id_fieldName}" => $params['msg_template_id']
         );
         CRM_Core_BAO_CustomValueTable::setValues($CDparams);
+
     }
 
-	return civicrm_api3_create_success($created_activity['values'], $params, 'Contact', 'sms');
+    return civicrm_api3_create_success($created_activity['values'], $params, 'Contact', 'sms');
 }
