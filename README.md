@@ -1,37 +1,52 @@
 # Chained SMS
 
-This CiviCRM extension enables you to conduct automated conversations via SMS, for example:
+This CiviCRM extension enables you to carry out automated conversations via SMS.
 
-CiviCRM: Hello, How are you feeling today on a scale of 1 to 10 (1 = bad and 10 = good)
-Contact: 3
-CiviCRM: I'm sorry to hear that. Would you like a call to cheer you up?
-Contact: Yes please
-CiviCRM: OK - we'll have someone call you as soon as possible.
+Here is an example:
 
-Chained SMS conversations start with an outbound SMS to a contact.
+> **CiviCRM:** Hello, How are you feeling today on a scale of 1 to 10 (1 = bad and 10 = good)
 
-CiviCRM then listens for inbound SMS from the contact. When an inbound SMS is received, CiviCRM looks a the text of the message and, depending on the content of the message, decides to send another message, or to stop the conversation.
+> **Contact:** 3
 
-# Setting up a chain
+> **CiviCRM:** I'm sorry to hear that. Would you like a call to cheer you up?
 
-1. Choose an initial message template to start the chain.
-2. Create some expected answers for this message template.
-3. For each answer, you can define responses to send when an inbound text matches the answer.
+> **Contact:** Yes please
 
+> **CiviCRM:** OK - we'll have someone call you as soon as possible.
 
+Chained SMS conversations might be simple, consisting of a single question and answer. Or they might be more complex, with branches in the conversation depending on the answers received. Regardless of the level of complexity, all conversations can be broken down into a series of 'couplets'.
 
+## Couplets - the building blocks of chained SMS
 
-For example,
+Each couplet starts with an outbound message to an intended recipient, which is followed (hopefully) by an inbound message from that recipient. CiviCRM reads the inbound message and decides, based on the content of the message, what to do next. It may decide to send another outbound message (which will start a new couplet) or it may decide to do nothing, i.e. to end the conversation.
 
-When an SMS is received The extension then listens to inbound SMS from a certain contact and sends
+In CiviCRM couplets are defined as an ***initial message***, along with a series of ***expected responses***, each of which has an associated ***subsequent message***.
 
-Chained SMS then listens for inbound SMS
+Here are some example couples that make up a conversation.
 
-It works by sending outbound SMS in response to inbound SMS that match a certain pattern. listening to inbound SMS and sending back outbound SMS when those  by allowing you to specify what outbSMS
+### Example couplets
 
- via  chains of outbound and inbound SMS.</Create automated chains of outbound and inbound SMS.</
+**Initial message**: Hello there, would you like to take part in a survey? [please answer yes or no]?
 
-* Outbound SMS can be sent in reply to inbound SMS.
+Expected reply | Subsequent message
+-------------- | ----------------------------------------
+No             | OK - sorry to bother you!
+Yes            | OK, great! What is your favourite color?
 
+**Initial message**: OK, great! What id your favourite color?
 
-## How
+Expected reply | Subsequent message
+-------------- | ---------------------------------------------
+Blue           | What shade of blue?
+Green          | Me too! Thanks for taking part in the survey!
+*              | Thanks for taking part in the survey!
+
+**Initial message**: What shade of blue?
+
+Expected reply | Subsequent message
+-------------- | -------------------------------------
+*              | Thanks for taking part in the survey!
+
+## Starting a conversation
+
+To start a conversation, send an SMS based on a template to one or more contacts in CiviCRM.
