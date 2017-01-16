@@ -1,6 +1,6 @@
 <?php
 
-class CRM_Chainsms_Form_Add extends CRM_Core_Form {
+class CRM_Chainedsms_Form_Add extends CRM_Core_Form {
 
   function preProcess(){
   }
@@ -15,7 +15,7 @@ class CRM_Chainsms_Form_Add extends CRM_Core_Form {
     if(($id = CRM_Utils_Array::value('id', $_GET)) && (CRM_Utils_Array::value('action', $_GET)=='delete' ||CRM_Utils_Array::value('action', $_GET)=='update')){
       //if we are passed an id and this is an update
 
-      $query = "SELECT * FROM civicrm_chainsms_answer WHERE id=%1";
+      $query = "SELECT * FROM civicrm_chainedsms_answer WHERE id=%1";
       $params[1] = array($id, 'Integer');
       $result = CRM_Core_DAO::executeQuery($query, $params);
       $result->fetch();
@@ -80,7 +80,7 @@ class CRM_Chainsms_Form_Add extends CRM_Core_Form {
     }
     //if we are updating, update
     if($this->_action == CRM_Core_Action::ADD){
-      $query = "INSERT INTO civicrm_chainsms_answer SET
+      $query = "INSERT INTO civicrm_chainedsms_answer SET
         msg_template_id = %1,
         answer = %2,
         next_msg_template_id = %3";
@@ -89,7 +89,7 @@ class CRM_Chainsms_Form_Add extends CRM_Core_Form {
       CRM_Utils_System::redirect('/civicrm/sms/chains');
       ////set message and redirect
     }elseif($this->_action == CRM_Core_Action::UPDATE){
-      $query = "UPDATE civicrm_chainsms_answer SET
+      $query = "UPDATE civicrm_chainedsms_answer SET
         msg_template_id = %1,
         answer = %2,
         next_msg_template_id = %3
@@ -99,7 +99,7 @@ class CRM_Chainsms_Form_Add extends CRM_Core_Form {
       CRM_Utils_System::redirect('/civicrm/sms/chains');
 
     }elseif($this->_action == CRM_Core_Action::DELETE){
-      $query = "DELETE FROM civicrm_chainsms_answer
+      $query = "DELETE FROM civicrm_chainedsms_answer
         WHERE id=%4";
       $result = CRM_Core_DAO::executeQuery($query, $params);
       CRM_Core_Session::setStatus('Your answer has been deleted');

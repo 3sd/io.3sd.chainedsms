@@ -1,5 +1,5 @@
 <?php
-class CRM_Chainsms_Processor{
+class CRM_Chainedsms_Processor{
   function __construct(){
     $this->ChainedSMSTableName = civicrm_api("CustomGroup","getvalue", array ('version' => '3', 'name' =>'Chained_SMS', 'return' =>'table_name'));
     $this->ChainedSMSColumnName = civicrm_api("CustomField","getvalue", array ('version' => '3', 'name' =>'message_template_id', 'return' =>'column_name'));
@@ -48,7 +48,7 @@ class CRM_Chainsms_Processor{
 
     $nextMessageQuery = "
       SELECT next_msg_template_id, answer
-      FROM civicrm_chainsms_answer
+      FROM civicrm_chainedsms_answer
       WHERE msg_template_id = %1";
 
     $nextMessageParams[1]=array($mostRecentOutboundChainSMS->msg_template_id, 'Integer');
@@ -72,8 +72,8 @@ class CRM_Chainsms_Processor{
     $query="
       SELECT ca.id, ca.activity_date_time, activity_type_id
       FROM civicrm_activity AS ca
-      JOIN civicrm_activity_target AS cat ON cat.activity_id=ca.id
-      WHERE target_contact_id=%1 AND activity_type_id IN ({$this->OutboundSMSActivityTypeId}, {$this->OutboundMassSMSActivityTypeId})
+      JOIN civicrm_activity_contact AS cac ON cac.activity_id=ca.id AND record_type_id = 3
+      WHERE cac.contact_id=%1 AND ca.activity_type_id IN ({$this->OutboundSMSActivityTypeId}, {$this->OutboundMassSMSActivityTypeId})
       ORDER BY activity_date_time DESC
       LIMIT 1;
     ";
@@ -84,8 +84,10 @@ class CRM_Chainsms_Processor{
     $params[1]=array($target_contact_id, 'Integer');
     $latestOutbound = CRM_Core_DAO::executeQuery($query, $params);
     if(!$latestOutbound->fetch()){
-      return 0; 
+      return 0;
     }
+
+    var_dump($this->ChainedSMSTableName);exit;
 
     if($latestOutbound->activity_type_id==$this->OutboundSMSActivityTypeId){
 
@@ -99,7 +101,6 @@ class CRM_Chainsms_Processor{
 
       $latestOutboundSMS = CRM_Core_DAO::executeQuery($query, $params);
       $latestOutboundSMS->fetch();
-      //echo 'this is an SMS';exit;
 
     }elseif($latestOutbound->activity_type_id==$this->OutboundMassSMSActivityTypeId){
 
@@ -107,7 +108,7 @@ class CRM_Chainsms_Processor{
       $query = "
         SELECT ca.id AS activity_id, cm.msg_template_id, activity_date_time
         FROM civicrm_activity AS ca
-        JOIN civicrm_mailing AS cm ON ca.source_record_id=cm.id 
+        JOIN civicrm_mailing AS cm ON ca.source_record_id=cm.id
         WHERE ca.id=%1";
       $params[1]=array($latestOutbound->id, 'Integer');
 
@@ -115,7 +116,7 @@ class CRM_Chainsms_Processor{
       $latestOutboundSMS->fetch();
       //echo 'this is a mass SMS';exit;
 
-    } 
+    }
     return $latestOutboundSMS;
   }
 
@@ -123,14 +124,14 @@ class CRM_Chainsms_Processor{
     $query="
       SELECT
       *
-      FROM 
+      FROM
       civicrm_activity
       WHERE
       activity_type_id={$this->InboundSMSActivityTypeId} AND
       source_contact_id=%1
       ORDER BY
       activity_date_time DESC
-      LIMIT 1,1        
+      LIMIT 1,1
       ";
 
     $params[1]=array($source_contact_id, 'Integer');
@@ -138,7 +139,7 @@ class CRM_Chainsms_Processor{
     if($activity->fetch()){
       return $activity;
     }else{
-      return 0; 
+      return 0;
     }
   }
 

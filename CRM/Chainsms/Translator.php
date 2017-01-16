@@ -36,7 +36,7 @@ class CRM_ChainSMS_Translator {
     foreach($this->groups as $group_id){
       $contacts = civicrm_api('GroupContact', 'Get', array('version' => 3, 'rowCount' => '1000000', 'group_id' => $group_id));
       foreach ($contacts['values'] as $contact){
-        $this->contacts[$contact['contact_id']] =new CRM_Chainsms_Contact($contact['contact_id']);
+        $this->contacts[$contact['contact_id']] =new CRM_Chainedsms_Contact($contact['contact_id']);
       }
     }
 

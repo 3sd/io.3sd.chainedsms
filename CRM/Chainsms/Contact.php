@@ -1,5 +1,5 @@
 <?php
-class CRM_Chainsms_Contact{
+class CRM_Chainedsms_Contact{
 
   function __construct($id){
     $this->id = $id;

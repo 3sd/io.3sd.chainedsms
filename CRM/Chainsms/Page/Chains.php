@@ -1,6 +1,6 @@
 <?php
 
-class CRM_Chainsms_Page_Chains extends CRM_Core_Page {
+class CRM_Chainedsms_Page_Chains extends CRM_Core_Page {
   function run() {
     // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
     CRM_Utils_System::setTitle(ts('Chain SMS settings'));
@@ -18,7 +18,7 @@ class CRM_Chainsms_Page_Chains extends CRM_Core_Page {
       cnmt.msg_title AS cnmt_msg_title,
       cnmt.msg_text AS cnmt_msg_text
 
-      FROM civicrm_chainsms_answer  AS cca
+      FROM civicrm_chainedsms_answer  AS cca
 
       JOIN civicrm_msg_template AS cmt
       ON cca.msg_template_id = cmt.id

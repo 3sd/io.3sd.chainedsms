@@ -1,21 +1,22 @@
 <?xml version="1.0"?>
-<extension key="org.thirdsectordesign.chainsms" type="module">
-  <file>chainsms</file>
+<extension key="org.thirdsectordesign.chainedsms" type="module">
+  <file>chainedsms</file>
   <name>Chained SMS</name>
-  <description>Allows for outbound SMS to be sent in reply to inbound SMS</description>
-  <license>GNU AFFERO GENERAL PUBLIC LICENSE Version 3 </license>
+  <description>Create automated chains of outbound and inbound SMS.</description>
+  <license>AGPL-3.0</license>
   <maintainer>
     <author>Michael McAndrew</author>
     <email>michaelmcandrew@thirdsectordesign.org</email>
   </maintainer>
-  <releaseDate>2012-10-25</releaseDate>
-  <version>0.1</version>
-  <develStage>alpha</develStage>
+  <releaseDate>2017-01-16</releaseDate>
+  <version>1.0</version>
+  <develStage>beta</develStage>
   <compatibility>
-    <ver>4.2</ver>
+    <ver>4.6</ver>
+    <ver>4.7</ver>
   </compatibility>
-  <comments></comments>
+  <comments>Funding generously provided by Future First and National Democratic Institute.</comments>
   <civix>
-    <namespace>CRM/Chainsms</namespace>
+    <namespace>CRM/Chainedsms</namespace>
   </civix>
 </extension>
