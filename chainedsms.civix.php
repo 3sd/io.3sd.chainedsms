@@ -128,14 +128,14 @@ function _chainedsms_civix_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
 }
 
 /**
- * @return CRM_Chainedsms_Upgrader
+ * @return CRM_ChainedSMS_Upgrader
  */
 function _chainedsms_civix_upgrader() {
-  if (!file_exists(__DIR__.'/CRM/Chainedsms/Upgrader.php')) {
+  if (!file_exists(__DIR__.'/CRM/ChainedSMS/Upgrader.php')) {
     return NULL;
   }
   else {
-    return CRM_Chainedsms_Upgrader_Base::instance();
+    return CRM_ChainedSMS_Upgrader_Base::instance();
   }
 }
 
@@ -189,7 +189,7 @@ function _chainedsms_civix_civicrm_managed(&$entities) {
     $es = include $file;
     foreach ($es as $e) {
       if (empty($e['module'])) {
-        $e['module'] = 'org.thirdsectordesign.chainedsms';
+        $e['module'] = 'io.3sd.chainedsms';
       }
       $entities[] = $e;
     }
@@ -218,7 +218,7 @@ function _chainedsms_civix_civicrm_caseTypes(&$caseTypes) {
       // throw new CRM_Core_Exception($errorMessage);
     }
     $caseTypes[$name] = array(
-      'module' => 'org.thirdsectordesign.chainedsms',
+      'module' => 'io.3sd.chainedsms',
       'name' => $name,
       'file' => $file,
     );
@@ -244,7 +244,7 @@ function _chainedsms_civix_civicrm_angularModules(&$angularModules) {
     $name = preg_replace(':\.ang\.php$:', '', basename($file));
     $module = include $file;
     if (empty($module['ext'])) {
-      $module['ext'] = 'org.thirdsectordesign.chainedsms';
+      $module['ext'] = 'io.3sd.chainedsms';
     }
     $angularModules[$name] = $module;
   }

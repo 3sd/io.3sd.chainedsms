@@ -2,14 +2,14 @@
 <menu>
   <item>
     <path>civicrm/sms/chains</path>
-    <page_callback>CRM_Chainedsms_Page_Chains</page_callback>
+    <page_callback>CRM_ChainedSMS_Page_Chains</page_callback>
     <title>Chains</title>
     <access_arguments>view all contacts</access_arguments>
   </item>
   <item>
 	  <path>civicrm/sms/chains/answer</path>
-    <page_callback>CRM_Chainedsms_Form_Add</page_callback>
-    <title>Add answer</title>
+    <page_callback>CRM_ChainedSMS_Form_Add</page_callback>
+    <title>Add couplet</title>
     <access_arguments>view all contacts</access_arguments>
   </item>
 </menu>

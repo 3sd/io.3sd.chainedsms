@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<extension key="org.thirdsectordesign.chainedsms" type="module">
+<extension key="io.3sd.chainedsms" type="module">
   <file>chainedsms</file>
   <name>Chained SMS</name>
   <description>Create automated chains of outbound and inbound SMS.</description>
@@ -17,6 +17,6 @@
   </compatibility>
   <comments>Funding generously provided by Future First and National Democratic Institute.</comments>
   <civix>
-    <namespace>CRM/Chainedsms</namespace>
+    <namespace>CRM/ChainedSMS</namespace>
   </civix>
 </extension>

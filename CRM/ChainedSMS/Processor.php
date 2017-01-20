@@ -1,5 +1,5 @@
 <?php
-class CRM_Chainedsms_Processor{
+class CRM_ChainedSMS_Processor{
   function __construct(){
     $this->ChainedSMSTableName = civicrm_api("CustomGroup","getvalue", array ('version' => '3', 'name' =>'Chained_SMS', 'return' =>'table_name'));
     $this->ChainedSMSColumnName = civicrm_api("CustomField","getvalue", array ('version' => '3', 'name' =>'message_template_id', 'return' =>'column_name'));
@@ -16,7 +16,7 @@ class CRM_Chainedsms_Processor{
     $mostRecentOutboundChainSMS = $this->mostRecentOutboundChainSMS($activity['source_contact_id']);
 
     //if there is no most recent question, then stop inbound processing
-    if(!$mostRecentOutboundChainSMS){
+    if($mostRecentOutboundChainSMS->N == 0){
       return 1;
     }
 
@@ -47,18 +47,23 @@ class CRM_Chainedsms_Processor{
     // TODO - mark that this is an answer
 
     $nextMessageQuery = "
-      SELECT next_msg_template_id, answer
-      FROM civicrm_chainedsms_answer
-      WHERE msg_template_id = %1";
+      SELECT subsequent_msg_template_id, answer
+      FROM civicrm_chainedsms_couplet
+      WHERE initial_msg_template_id = %1
+      ORDER BY answer='*' ASC, answer";
 
-    $nextMessageParams[1]=array($mostRecentOutboundChainSMS->msg_template_id, 'Integer');
+
+    $nextMessageParams[1]=array($mostRecentOutboundChainSMS->message_template_id, 'Integer');
     //$nextMessageParams=array();
 
     $nextMessageResult = CRM_Core_DAO::executeQuery($nextMessageQuery, $nextMessageParams);
 
+
     while($nextMessageResult->fetch()){
-      if(strtolower($nextMessageResult->answer) == strtolower($activity[details]) || $nextMessageResult->answer==''){
-        civicrm_api('Contact', 'sms', array('version'=>'3','contact_id' => $activity['source_contact_id'], 'msg_template_id'=>$nextMessageResult->next_msg_template_id));
+
+      if(strtolower($nextMessageResult->answer) == strtolower(trim($activity['details'])) || $nextMessageResult->answer == '*'){ //TODO introduce wildcards
+        civicrm_api('Contact', 'sms', array('version'=>'3','contact_id' => $activity['source_contact_id'], 'msg_template_id'=>$nextMessageResult->subsequent_msg_template_id));
+        break; // only send (and the first encountered text
       }
     }
 
@@ -86,14 +91,11 @@ class CRM_Chainedsms_Processor{
     if(!$latestOutbound->fetch()){
       return 0;
     }
-
-    var_dump($this->ChainedSMSTableName);exit;
-
     if($latestOutbound->activity_type_id==$this->OutboundSMSActivityTypeId){
 
       //we need to look in custom data
       $query = "
-        SELECT entity_id AS activity_id, message_template_id_82 AS msg_template_id, activity_date_time
+        SELECT cd.entity_id AS activity_id, message_template_id, activity_date_time
         FROM {$this->ChainedSMSTableName} AS cd
         JOIN civicrm_activity AS ca ON ca.id=cd.entity_id
         WHERE entity_id=%1";
@@ -108,6 +110,7 @@ class CRM_Chainedsms_Processor{
       $query = "
         SELECT ca.id AS activity_id, cm.msg_template_id, activity_date_time
         FROM civicrm_activity AS ca
+        JOIN civicrm_activity_contact AS cac ON cac.activity_id=ca.id AND record_type_id = 2
         JOIN civicrm_mailing AS cm ON ca.source_record_id=cm.id
         WHERE ca.id=%1";
       $params[1]=array($latestOutbound->id, 'Integer');
@@ -125,10 +128,11 @@ class CRM_Chainedsms_Processor{
       SELECT
       *
       FROM
-      civicrm_activity
+      civicrm_activity AS ca
+      JOIN civicrm_activity_contact AS cac ON cac.activity_id=ca.id AND record_type_id = 2
       WHERE
       activity_type_id={$this->InboundSMSActivityTypeId} AND
-      source_contact_id=%1
+      cac.contact_id=%1
       ORDER BY
       activity_date_time DESC
       LIMIT 1,1

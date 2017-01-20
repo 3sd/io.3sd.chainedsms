@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/ChainedSMS</base>
+  <class>Couplet</class>
+  <name>civicrm_chainedsms_couplet</name>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique Couplet ID</comment>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>initial_msg_template_id</name>
+    <title>Initial Message Template</title>
+    <type>int unsigned</type>
+    <comment>FK to the message template.</comment>
+    <required>true</required>
+  </field>
+  <foreignKey>
+    <name>initial_msg_template_id</name>
+    <table>civicrm_msg_template</table>
+    <key>id</key>
+    <onDelete>SET NULL</onDelete>
+  </foreignKey>
+
+  <field>
+    <name>answer</name>
+    <type>varchar</type>
+    <html>
+      <type>Text</type>
+      <size>30</size>
+    </html>
+    <required>true</required>
+  </field>
+
+  <field>
+    <name>subsequent_msg_template_id</name>
+    <title>Subsequent Message Template</title>
+    <type>int unsigned</type>
+    <comment>FK to the message template.</comment>
+  </field>
+  <foreignKey>
+    <name>subsequent_msg_template_id</name>
+    <table>civicrm_msg_template</table>
+    <key>id</key>
+    <onDelete>SET NULL</onDelete>
+    <required>true</required>
+  </foreignKey>
+
+</table>
