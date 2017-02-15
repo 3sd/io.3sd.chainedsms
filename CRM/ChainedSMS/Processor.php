@@ -1,8 +1,6 @@
 <?php
 class CRM_ChainedSMS_Processor{
   function __construct(){
-    $this->ChainedSMSTableName = civicrm_api("CustomGroup","getvalue", array ('version' => '3', 'name' =>'Chained_SMS', 'return' =>'table_name'));
-    $this->ChainedSMSColumnName = civicrm_api("CustomField","getvalue", array ('version' => '3', 'name' =>'message_template_id', 'return' =>'column_name'));
     $this->OutboundSMSActivityTypeId = CRM_Core_OptionGroup::getValue('activity_type', 'SMS', 'name');
     $this->OutboundMassSMSActivityTypeId = CRM_Core_OptionGroup::getValue('activity_type', 'Mass SMS', 'name');
     $this->InboundSMSActivityTypeId = CRM_Core_OptionGroup::getValue('activity_type', 'Inbound SMS', 'name');
@@ -53,7 +51,7 @@ class CRM_ChainedSMS_Processor{
       ORDER BY answer='*' ASC, answer";
 
 
-    $nextMessageParams[1]=array($mostRecentOutboundChainSMS->message_template_id, 'Integer');
+    $nextMessageParams[1]=array($mostRecentOutboundChainSMS->msg_template_id, 'Integer');
     //$nextMessageParams=array();
 
     $nextMessageResult = CRM_Core_DAO::executeQuery($nextMessageQuery, $nextMessageParams);
@@ -93,12 +91,12 @@ class CRM_ChainedSMS_Processor{
     }
     if($latestOutbound->activity_type_id==$this->OutboundSMSActivityTypeId){
 
-      //we need to look in custom data
+      //we need to look in civicrm_chainedsms_outbound_template
       $query = "
-        SELECT cd.entity_id AS activity_id, message_template_id, activity_date_time
-        FROM {$this->ChainedSMSTableName} AS cd
-        JOIN civicrm_activity AS ca ON ca.id=cd.entity_id
-        WHERE entity_id=%1";
+        SELECT ccot.activity_id, ccot.msg_template_id, activity_date_time
+        FROM civicrm_chainedsms_outbound_template AS ccot
+        JOIN civicrm_activity AS ca ON ca.id=ccot.activity_id
+        WHERE activity_id=%1";
       $params[1]=array($latestOutbound->id, 'Integer');
 
       $latestOutboundSMS = CRM_Core_DAO::executeQuery($query, $params);

@@ -68,20 +68,18 @@ function civicrm_api3_contact_sms($params) {
     }
 
 	$sms = CRM_Activity_BAO_Activity::sendSMS($contactDetails, $activityParams, $provider, $contactIds, $userID);
-    $created_activity = civicrm_api('Activity', 'get', array('version' => 3, 'id' => $sms[1]));
+    $created_activity = civicrm_api('Activity', 'get', array('version' => 3, 'id' => $sms[1], 'debug' => 1));
    if(!$created_activity['count']){
      return civicrm_api3_create_success();
    }
     //record the message template ID if this was sent using a message template
     if($params['msg_template_id']){
 
-        $message_template_id_fieldName=civicrm_api("CustomField","getvalue", array ('version' => '3', 'name' =>'message_template_id', 'return' =>'id'));
-        $CDparams = array(
-            'entityID' => $created_activity['id'],
-            "custom_{$message_template_id_fieldName}" => $params['msg_template_id']
-        );
-        CRM_Core_BAO_CustomValueTable::setValues($CDparams);
-
+      //TODO record message template used
+      $params[1] = array($created_activity['id'], 'Integer');
+      $params[2] = array($params['msg_template_id'], 'Integer');
+      $query = "INSERT INTO civicrm_chainedsms_outbound_template SET activity_id = %1, msg_template_id = %2";
+      $result = CRM_Core_DAO::executeQuery($query, $params);
     }
 
     return civicrm_api3_create_success($created_activity['values'], $params, 'Contact', 'sms');
