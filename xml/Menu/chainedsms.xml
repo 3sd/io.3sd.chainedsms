@@ -3,7 +3,7 @@
   <item>
     <path>civicrm/sms/chains</path>
     <page_callback>CRM_ChainedSMS_Page_Chains</page_callback>
-    <title>Chains</title>
+    <title>Chained SMS</title>
     <access_arguments>view all contacts</access_arguments>
   </item>
   <item>

@@ -1,5 +1,6 @@
-<p>SMS chains are made up of a series of SMS couplets. A couplet is an initial outgoing message, an expected reply, and a subseqent message. This page shows all existing SMS couplets, grouped by the initial outgoing message.  You can edit or delete existing couplets and add new ones.</p>
-<p>The messages themselves are based on message templates. Visit the <a href="{crmURL p="civicrm/admin/messageTemplates" q="selectedChild=user&reset=1"}">message templates</a> page to edit and create new messages to use as the basis for your chained SMS.</p>
+<p>SMS chains are made up of a series of SMS couplets. A couplet is an initial outgoing message, an expected reply, and a subseqent message.  The messages themselves are based on message templates. Visit the <a href="{crmURL p="civicrm/admin/messageTemplates" q="selectedChild=user&reset=1"}">message templates</a> page to edit and create new messages to use as the basis for your chained SMS.</p>
+<h2>SMS couplets</h2>
+<p>Below is a list of all defined SMS couplets, grouped by the initial outgoing message.  You can edit or delete existing couplets and add new ones.</p>
 {foreach from=$templates item=template}
 	<h3>{$template.cimt_msg_title}</h3>
 	<p>{$template.cimt_msg_text}</p>

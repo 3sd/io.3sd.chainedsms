@@ -4,7 +4,6 @@ class CRM_ChainedSMS_Page_Chains extends CRM_Core_Page {
   function run() {
 
     // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
-    CRM_Utils_System::setTitle(ts('Chain SMS couplets'));
 
     $query = "SELECT
 
