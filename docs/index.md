@@ -34,4 +34,4 @@ Here's a more involved example where the second text we send depends on the answ
 
 ## Getting started
 
-Chained SMS is easy to use. To get started, you'll need to [install](installation.md) the extension, [create some message chains](create), and [test](test.md) them out. Once you are happy that the conversation is proceeding as desired, you can start the chain by [sending the first message](send) in the chain to either a contact or a group of contacts.
+Chained SMS is easy to use. To get started, you'll need to [install](install.md) the extension, [create some message chains](create), and [test](test.md) them out. Once you are happy that the conversation is proceeding as desired, you can start the chain by [sending the first message](send) in the chain to either a contact or a group of contacts.
