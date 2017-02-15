@@ -1,0 +1,11 @@
+site_name: Chained SMS
+theme: material
+pages:
+- About: index.md
+- Installation: install.md
+- Creating SMS chains: create.md
+- Testing SMS chains: test.md
+- Sending chained SMS: send.md
+- Getting help: help.md
+- Contributing: credits.md
+- Credits: credits.md
