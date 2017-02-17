@@ -15,6 +15,10 @@ And the following call sends the message with template ID 68 to the group with I
 
 `cv api contact.sms msg_template_id=68 group_id=7`
 
+You can use the API explorer to trigger your SMS message as follows
+
+![Sending a message via the API](img/chained-sms-start-via-api.png)
+
 ## Restarting a conversation
 
 From time to time, a chained SMS conversation may stop. For example, if the contact sent an unexpected response for which no subsequent message had been defined. Here's a contrived example.
