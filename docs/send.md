@@ -15,7 +15,7 @@ And the following call sends the message with template ID 68 to the group with I
 
 `cv api contact.sms msg_template_id=68 group_id=7`
 
-You can use the API explorer to trigger your SMS message as follows
+You can use the API explorer (available at https://example.org/civicrm/api/explorer) to trigger your SMS message as follows
 
 ![Sending a message via the API](img/chained-sms-start-via-api.png)
 
