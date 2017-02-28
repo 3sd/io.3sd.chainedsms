@@ -43,4 +43,4 @@ Note that you can defined an expected reply as `*` which will cause it to be sen
 
 ## Creating a couplet
 
-Before creating a couplet, you will need to define all the outbound messages as templates (see **Mailings > Message templates**). Once these have been defined, you can create a couplet by clicking on the 'add a new couplet' button. This will bring up a form that allows you to select an initial message, enter an expected reply, and select a follow on message. Repeat this process until all your couplets are defined.
+Before creating a couplet, you need to define the outbound messages that you'll want to use as templates (see **Mailings > Message templates**). Note that you'll need to include your messages in the Plain Text Format fields. Chained SMS will ignore any text in the HTML Format these as Once these have been defined, you can create a couplet by clicking on the 'add a new couplet' button. This will bring up a form that allows you to select an initial message, enter an expected reply, and select a follow on message. Repeat this process until all your couplets are defined.
